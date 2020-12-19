@@ -4,23 +4,32 @@ import socket
 
 class NetworkUtility:
     def __init__(self):
-        clientsInNetwork = []
-        for ping in range(1,255):
-            ipAddress = "192.168.1." + str(ping)
+        self.clientsInNetwork = []
+        self.findClientsInNetwork()
+        self.printClientList()
+
+    def findClientsInNetwork(self, ipBody = "192.168.1.", endIp = 255, startIp = 0):
+        for ping in range(startIp,endIp):
+            print(".", end = "")
+            ipAddress = ipBody + str(ping)
             try:
                 ip = socket.gethostbyaddr(ipAddress)
                 nameOfDevice = ip[0]
                 address = ip[2][0]
                 pointPos = nameOfDevice.index(".")
                 newClient = [nameOfDevice[:pointPos],address ]
-                clientsInNetwork.append(newClient)
+                self.clientsInNetwork.append(newClient)
             except:
-                print(ipAddress,"is unused") 
+                pass
+
+    def printClientList(self):
+        print("\n-----------------")
+        print("Number of Devices Found:", len(self.clientsInNetwork)) 
         print("-----------------")
-        print("Number of Devices Found:", len(clientsInNetwork)) 
-        print("-----------------")
-        for clients in clientsInNetwork:
+        for clients in self.clientsInNetwork:
             print(f"Name: {clients[0]:30} \tIp: {clients[1]}")
+
+
 
 
 print("Starting NetworkUtility")
